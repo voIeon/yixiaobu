@@ -79,3 +79,20 @@ void Transformation::LLtoECEF(double lat, double lon, CTVector3d& ecef)
     ecef.z = (b * b * N / (a * a) + 0.0) * SINLAT;//alt 0.0
     //[2e]
 }
+
+void Transformation::ECEFtoENURotateMatrix(CTVector3d& ecef, double (&Rot)[9])
+{
+    double lon, lat, alt;
+    ECEFtoLL(ecef, lat, lon);
+    double latRad = DEGTORAD(lon);
+    double lonRad = DEGTORAD(lat);
+    Rot[0] = -sin(lonRad);
+    Rot[1] = cos(lonRad);
+    Rot[2] = 0;
+    Rot[3] = -sin(latRad) * cos(lonRad);
+    Rot[4] = -sin(latRad) * sin(lonRad);
+    Rot[5] = cos(latRad);
+    Rot[6] = cos(latRad) * cos(lonRad);
+    Rot[7] = cos(latRad) * sin(lonRad);
+    Rot[8] = sin(latRad);
+}

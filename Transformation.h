@@ -10,7 +10,9 @@ template<typename T>
 struct CTVector3
 {
 	CTVector3()
-	{};
+	{
+	};
+
 	CTVector3(T _x,T _y,T _z)
 		: x(_x)
 		, y(_y)
@@ -29,5 +31,7 @@ public:
 	static void ECEFtoLL(CTVector3d& ecef, double& lat, double& lon);
 
 	static void LLtoECEF(double lat, double lon, CTVector3d& ecef);
+
+	static void ECEFtoENURotateMatrix(CTVector3d& ecef, double(&Rot)[9]);
 };
 
