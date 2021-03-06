@@ -52,6 +52,8 @@ void CutShpGrid::CutGrid(int left, int buttom)
 	const double t = b + GRID_INTERVAL_LL;
 	
 	const int interval = _p->interval;
+	const int intSize = sizeof(int);
+	
 	 //		^ ->->->
 	 //		| ->->->->
 	 //		| ->->->->
@@ -115,14 +117,14 @@ void CutShpGrid::CutGrid(int left, int buttom)
 			
 			i++;
 			temLon = lon;
-			double l1 = lat;
-			fwrite(&i, 4, 1, fpGrid);
-			fwrite(&iPercent, 4, 1, fpGrid);
+			
+			fwrite(&i, intSize, 1, fpGrid);
+			fwrite(&iPercent, intSize, 1, fpGrid);
 			//四至 temLon temLat2 lon temLat
 		}
 		fflush(fpGrid);
 		
-		fwrite(&i, 4, 1, fpIndex);
+		fwrite(&i, intSize, 1, fpIndex);
 		fflush(fpIndex);
 
 		temLat = temLat2;
