@@ -152,8 +152,8 @@ int CutShpGrid::GetPercent(FourBoundaries & fb)
 			QPolygonF intersectPolygon = riverPolygon.intersected(gridPolygon);
 			double s = CalcPolygonArea(intersectPolygon);
 			//计算比例 存在1-2个河流湖泊与栅格交集 
-			double ss = ss / (_p->interval * _p->interval) * 100.0;
-			if (s > 0)
+			double ss = (s / (pow(_p->interval,2))) * 100.0;
+			if (ss > 0)
 			{
 				dPercent += ss;
 			}
