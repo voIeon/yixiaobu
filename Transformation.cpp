@@ -2,24 +2,15 @@
 
 #include "Transformation.h"
 
-#define WGS84_A     6378138.0
-#define WGS84_B     6356752.314245
 
-#define WGS84_f     1/298.257223565
-#define WGS84_E2    0.0066943799900965025
-
-#define DEGTORAD(a) (a)*0.0174532925
-#define RADTODEG(a) (a)*57.295779513082
-#define PI          3.1415926535898
-
-//https://blog.51cto.com/fengyuzaitu/1892212
+//[0] https://blog.51cto.com/fengyuzaitu/1892212
 void Transformation::ECEFtoLL(CTVector3d& ecef, double& lat, double& lon)
 {
     double      x, y, z;
     double      a, b, f, e, e1;
-    double      Longitude;
-    double      Latitude;
-    double      Altitude;
+    double      longitude;
+    double      latitude;
+    double      altitude;
     double      p, q;
     double      N;
 
@@ -37,18 +28,18 @@ void Transformation::ECEFtoLL(CTVector3d& ecef, double& lat, double& lon)
     p = sqrtl((x * x) + (y * y));
     q = atan2l((z * a), (p * b));
 
-    Longitude = atan2l(y, x);
-    Latitude = atan2l((z + (e1 * e1) * b * powl(sinl(q), 3)), (p - (e * e) * a * powl(cosl(q), 3)));
+    longitude = atan2l(y, x);
+    latitude = atan2l((z + (e1 * e1) * b * powl(sinl(q), 3)), (p - (e * e) * a * powl(cosl(q), 3)));
 
-    N = a / sqrtl(1 - ((e * e) * powl(sinl(Latitude), 2)));
+    N = a / sqrtl(1 - ((e * e) * powl(sinl(latitude), 2)));
 
-    Altitude = (p / cosl(Latitude)) - N;
-    Longitude = Longitude * 180.0 / PI;
-    Latitude = Latitude * 180.0 / PI;
+    altitude = (p / cosl(latitude)) - N;
 
-    lat = (double)Latitude;
-    lon = (double)Longitude;
-    Altitude = (double)Altitude;
+    lon = RADTODEG(longitude);
+    lat = RADTODEG(latitude);
+
+ //   altitude = (double)altitude;
+	//[0]
 }
 
 void Transformation::LLtoECEF(double lat, double lon, CTVector3d& ecef)
@@ -66,17 +57,17 @@ void Transformation::LLtoECEF(double lat, double lon, CTVector3d& ecef)
     a = (double)WGS84_A;
     b = (double)WGS84_B;
     double E = (a * a - b * b) / (a * a);;
-    double COSLAT = cos(DEGTORAD(lat));
-    double SINLAT = sin(DEGTORAD(lat));
-    double COSLONG = cos(DEGTORAD(lon));
-    double SINLONG = sin(DEGTORAD(lon));
+    double cosLat = cos(DEGTORAD(lat));
+    double sinLat = sin(DEGTORAD(lat));
+    double cosLon = cos(DEGTORAD(lon));
+    double sinLon = sin(DEGTORAD(lon));
 
-    double N = a / (sqrt(1 - E * SINLAT * SINLAT));
+    double N = a / (sqrt(1 - E * sinLat * sinLat));
     double NH = N + 0.0;//alt 0.0
 
-    ecef.x = NH * COSLAT * COSLONG;
-    ecef.y = NH * COSLAT * SINLONG;
-    ecef.z = (b * b * N / (a * a) + 0.0) * SINLAT;//alt 0.0
+    ecef.x = NH * cosLat * cosLon;
+    ecef.y = NH * cosLat * sinLon;
+    ecef.z = (b * b * N / (a * a) + 0.0) * sinLat;//alt 0.0
     //[2e]
 }
 
@@ -84,8 +75,8 @@ void Transformation::ECEFtoENURotateMatrix(CTVector3d& ecef, double (&Rot)[9])
 {
     double lon, lat, alt;
     ECEFtoLL(ecef, lat, lon);
-    double latRad = DEGTORAD(lon);
-    double lonRad = DEGTORAD(lat);
+    double lonRad = DEGTORAD(lon);
+    double latRad = DEGTORAD(lat);
     Rot[0] = -sin(lonRad);
     Rot[1] = cos(lonRad);
     Rot[2] = 0;
@@ -95,4 +86,20 @@ void Transformation::ECEFtoENURotateMatrix(CTVector3d& ecef, double (&Rot)[9])
     Rot[6] = cos(latRad) * cos(lonRad);
     Rot[7] = cos(latRad) * sin(lonRad);
     Rot[8] = sin(latRad);
+}
+
+void Transformation::Rotate01(double (&Rot)[9],CTVector3d& ecef0,CTVector3d& ecef1)
+{
+	//因为只用到在xy上的平移，暂时不使用z计算 (...)
+	ecef1.x = Rot[0] * ecef0.x + Rot[1] * ecef0.y ;//+ ...;
+	ecef1.y = Rot[3] * ecef0.x + Rot[4] * ecef0.y ;
+	ecef1.z = Rot[6] * ecef0.x + Rot[7] * ecef0.y ;
+}
+
+
+void Transformation::Rotate10(double (&Rot)[9],CTVector3d& ecef1,CTVector3d& ecef0)
+{
+	ecef0.x = Rot[0] * ecef1.x + Rot[3] * ecef1.y;
+	ecef0.y = Rot[1] * ecef1.x + Rot[4] * ecef1.y;
+	ecef0.z = Rot[2] * ecef1.x + Rot[5] * ecef1.y;
 }
