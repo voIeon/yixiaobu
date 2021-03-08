@@ -1,4 +1,4 @@
-#include "CutShpGrid.h"
+ï»¿#include "CutShpGrid.h"
 
 //#include "GridDefine.h"
 
@@ -6,17 +6,12 @@
 
 struct CutShpGridPrivate
 {
-	CutShpGridPrivate()
-	{
-		polygonsRivers.reserve(4400000);
-		polygonsLakes.reserve(4400000);
-	}
-	//ËÄÖÁ·¶Î§
+	//å››è‡³èŒƒå›´
 	int		 left;
 	int		 top;
 	int		 right;
 	int      buttom;
-	//Õ¤¸ñ²½³¤
+	//æ …æ ¼æ­¥é•¿
 	int		 interval;
 
 	Polygons polygonsRivers;
@@ -31,7 +26,7 @@ CutShpGrid::CutShpGrid(QWidget *parent)
 	connect(ui.pushButton, SIGNAL(clicked()), this, SLOT(CalcSlot()));
 }
 
-//´óµØÍ¼ÇÐ¿é
+//å¤§åœ°å›¾åˆ‡å—
 void CutShpGrid::CutBlock()
 {
 	int il = _p->left;
@@ -43,22 +38,23 @@ void CutShpGrid::CutBlock()
 	{
 		for (; ib < it; ++ib)
 		{
-			//¿¼ÂÇÊ¹ÓÃ¶àÏß³Ì
+			//è€ƒè™‘ä½¿ç”¨å¤šçº¿ç¨‹
 			CutGrid(il,ib);
 		}
 	}
 }
 
-//Õ¤¸ñ´¦Àí
+//æ …æ ¼å¤„ç†
 void CutShpGrid::CutGrid(int left, int buttom)
 {
-	//ËÄÖÁ·¶Î§
+	//å››è‡³èŒƒå›´
 	const double l = (double)left;
 	const double b = (double)buttom;
 	const double r = l + GRID_INTERVAL_LL;
 	const double t = b + GRID_INTERVAL_LL;
-	
+
 	const int interval = _p->interval;
+	
 	 //		^ ->->->
 	 //		| ->->->->
 	 //		| ->->->->
@@ -70,12 +66,12 @@ void CutShpGrid::CutGrid(int left, int buttom)
 	//		  9 A B C D E F 10
 	//	   8| ->->->->->->->->
 	//		  1  2 3 4 5 6 7 8
-	//±£´æÁ½¸ö¶þ½øÖÆÎÄ¼þ
-	//ÀýÈç 100_25 ºÍ100_25.bin ±£´æ×óÏÂ½Ç×ø±ê£¨100£¬25£©µÄ±ß³¤Îª1¶ÈµÄ¿é
-	//Õ¤¸ñ´Ó×óÏÂ½ÇÎ»ÖÃÓÉ×óÏòÓÒÔö¼Ó£¬µ½´ï¾­¶È×î´óÖµ£¬·µ»Ø×î×ó²à£¬Î³¶ÈÔÙÔö¼Ó£¬¾­¶ÈÔÙÖØ¸´ÉÏÁ½²½¡£
-	//100_25 ÉßÐÎÏòÉÏ£¬Ë÷ÒýÔö¼Ó£¬ÓëËùÔÚÕ¤¸ñµÄË®Ïµ±ÈÀý¹¹³ÉÒ»ÌõÊý¾Ý¡£ÔÚ1¶ÈµÄ¿éÖÐ´ó¸ÅÓÐ400w×éÊý¾Ý£¬
-	//	³¤¶ÈÎª4,000,000 * sizeof(int) * 2 36m
-	//100_25.bin ¼ÇÂ¼ÉßÐÎÏòÉÏÃ¿Ò»ÐÐ×îºóÒ»¸öÖµ£¬ÓÃÀ´¿ìËÙË÷Òý
+	//ä¿å­˜ä¸¤ä¸ªäºŒè¿›åˆ¶æ–‡ä»¶
+	//ä¾‹å¦‚ 100_25 å’Œ100_25.bin ä¿å­˜å·¦ä¸‹è§’åæ ‡ï¼ˆ100ï¼Œ25ï¼‰çš„è¾¹é•¿ä¸º1åº¦çš„å—
+	//æ …æ ¼ä»Žå·¦ä¸‹è§’ä½ç½®ç”±å·¦å‘å³å¢žåŠ ï¼Œåˆ°è¾¾ç»åº¦æœ€å¤§å€¼ï¼Œè¿”å›žæœ€å·¦ä¾§ï¼Œçº¬åº¦å†å¢žåŠ ï¼Œç»åº¦å†é‡å¤ä¸Šä¸¤æ­¥ã€‚
+	//100_25 è›‡å½¢å‘ä¸Šï¼Œç´¢å¼•å¢žåŠ ï¼Œä¸Žæ‰€åœ¨æ …æ ¼çš„æ°´ç³»æ¯”ä¾‹æž„æˆä¸€æ¡æ•°æ®ã€‚åœ¨1åº¦çš„å—ä¸­å¤§æ¦‚æœ‰400wç»„æ•°æ®ï¼Œ
+	//	é•¿åº¦ä¸º4,000,000 * sizeof(int) * 2 36m
+	//100_25.bin è®°å½•è›‡å½¢å‘ä¸Šæ¯ä¸€è¡Œæœ€åŽä¸€ä¸ªå€¼ï¼Œç”¨æ¥å¿«é€Ÿç´¢å¼•
 
 	QString gridFileName = QString::number(l) + "_" + QString::number(b);
 	QString indexFileName = gridFileName + ".bin";
@@ -85,7 +81,7 @@ void CutShpGrid::CutGrid(int left, int buttom)
 	fpIndex = fopen(indexFileName.toStdString().c_str(), "wb+");
 
 	CTVector3d ecef;
-	//latÔÚÇ° lonÔÚºó
+	//latåœ¨å‰ lonåœ¨åŽ
 	CTVector3d stepX1(0, interval, 0);
 	CTVector3d stepY1(interval, 0, 0);
 	CTVector3d stepY0;
@@ -94,7 +90,7 @@ void CutShpGrid::CutGrid(int left, int buttom)
 
 	int i = 0;
 	double temLat = b;
-	//Î³¶ÈµÝÔö
+	//çº¬åº¦é€’å¢ž
 	while (temLat < t)
 	{
 		double temLon = l;
@@ -109,7 +105,7 @@ void CutShpGrid::CutGrid(int left, int buttom)
 		temLat2 = latDeg;
 
 		double lat, lon;
-		//¾­¶ÈµÝÔö
+		//ï¿½ï¿½ï¿½Èµï¿½ï¿½ï¿½
 		while (temLon < r)
 		{
 			Transformation::LLtoECEF(b, temLon, ecef);
@@ -119,16 +115,16 @@ void CutShpGrid::CutGrid(int left, int buttom)
 			Transformation::ECEFtoLL(ecef, lat, lon);
 
 			int iPercent = GetPercent(FourBoundaries(temLon,temLat2,lon,temLat));
-			
+
 			i++;
 			temLon = lon;
 			double l1 = lat;
 			fwrite(&i, 4, 1, fpGrid);
 			fwrite(&iPercent, 4, 1, fpGrid);
-			//ËÄÖÁ temLon temLat2 lon temLat
+			//å››è‡³ temLon temLat2 lon temLat
 		}
 		fflush(fpGrid);
-		
+
 		fwrite(&i, 4, 1, fpIndex);
 		fflush(fpIndex);
 
@@ -137,17 +133,16 @@ void CutShpGrid::CutGrid(int left, int buttom)
 	fclose(fpGrid);
 	fclose(fpIndex);
 }
-
-//»ñÈ¡Ë®Ïµ±ÈÀý
+//èŽ·å–æ°´ç³»æ¯”ä¾‹
 int CutShpGrid::GetPercent(FourBoundaries & fb)
 {
 	double dPercent = 0.0;
 
-	//ºÓÁ÷
+	//æ²³æµ
 	const Polygons& rivers = _p->polygonsRivers;
 	for (auto river : rivers)
 	{
-		//Ô¤´¦Àí ¹ýÂËÊý¾Ý Ë§Ñ¡³öËÄÖÁ·¶Î§ÓÐÖØµþµÄ½øÐÐ½»¼¯ÇøÓò¼ÆËã
+		//é¢„å¤„ç† è¿‡æ»¤æ•°æ® å¸…é€‰å‡ºå››è‡³èŒƒå›´æœ‰é‡å çš„è¿›è¡Œäº¤é›†åŒºåŸŸè®¡ç®—
 		if (fb.IsCoincidence(river.fourBound))
 		{
 			QPolygonF gridPolygon;
@@ -158,8 +153,8 @@ int CutShpGrid::GetPercent(FourBoundaries & fb)
 
 			QPolygonF intersectPolygon = riverPolygon.intersected(gridPolygon);
 			double s = CalcPolygonArea(intersectPolygon);
-			//¼ÆËã±ÈÀý ´æÔÚ1-2¸öºÓÁ÷ºþ²´ÓëÕ¤¸ñ½»¼¯ 
-			double ss = s / pow(_p->interval,2) * 100.0 ;
+			//è®¡ç®—æ¯”ä¾‹ å­˜åœ¨1-2ä¸ªæ²³æµæ¹–æ³Šä¸Žæ …æ ¼äº¤é›†
+			double ss = (s / (pow(_p->interval,2))) * 100.0;
 			if (ss > 0)
 			{
 				dPercent += ss;
@@ -167,7 +162,7 @@ int CutShpGrid::GetPercent(FourBoundaries & fb)
 		}
 	}
 
-	//ºþ²´
+	//æ¹–æ³Š
 	const Polygons& lakes = _p->polygonsLakes;
 	for (auto lake : lakes)
 	{
@@ -177,7 +172,7 @@ int CutShpGrid::GetPercent(FourBoundaries & fb)
 	return (int)dPercent;
 }
 
-//¼ÆËãÇøÓòÃæ»ý ½Ï³¤
+//è®¡ç®—åŒºåŸŸé¢ç§¯ è¾ƒé•¿
 double CutShpGrid::CalcPolygonArea(QPolygonF& polygon)
 {
 	return 0.0;
@@ -192,6 +187,6 @@ void CutShpGrid::CalcSlot()
 
 	_p->interval = ui.spinBox_interval->value();
 
-	//´óµØÍ¼ÇÐ¿é
+	//å¤§åœ°å›¾åˆ‡å—
 	CutBlock();
 }
