@@ -1,6 +1,6 @@
 #pragma once
 
-#include "GridDefine.h"
+#include <TranformationDll/GridDefine.h>
 
 #include <QtWidgets/QWidget>
 #include "ui_CutShpGrid.h"
@@ -16,20 +16,20 @@ public:
 
 private:
 
-    //åˆ‡åˆ†å—
+    //ÇĞ·Ö¿é
     void CutBlock();
 
-    //åˆ‡åˆ†æ …æ ¼
+    //ÇĞ·ÖÕ¤¸ñ
     //left longitude ,buttom latitude degree
     void CutGrid(int left, int buttom);
     
-    //é€šè¿‡å°æ ¼çš„å››è‡³èŒƒå›´ é€šè¿‡äº¤é›†è®¡ç®—è·å–å¯¹åº”åŒºåŸŸçš„æ°´ç³»æ¯”ä¾‹
+    //Í¨¹ıĞ¡¸ñµÄËÄÖÁ·¶Î§ Í¨¹ı½»¼¯¼ÆËã»ñÈ¡¶ÔÓ¦ÇøÓòµÄË®Ïµ±ÈÀı
     int GetPercent(FourBoundaries& fb);
 
 //    int GetRiversPercent(double l, double t, double r, double b);
     double CalcPolygonArea(QPolygonF& polygon);
 private slots:
-    //è®¡ç®—
+    //¼ÆËã
     void CalcSlot();
 private:
     Ui::CutShpGridClass ui;

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "TransformationDll_global.h"
+
 #include <vector>
 
 #define GRID_INTERVAL_LL 1
@@ -17,7 +19,7 @@
 #define PI          3.1415926535898
 
 template<typename T>
-struct CTVector3
+struct TRANSFORMATION_DECL CTVector3
 {
 	CTVector3()
 	{
@@ -47,7 +49,7 @@ typedef CTVector3<double> CTVector3d;
 
 typedef std::vector<CTVector3d> LLPolygon;		//点集构成区域
 
-struct FourBoundaries
+struct TRANSFORMATION_DECL FourBoundaries
 {
 	FourBoundaries(float fl,float ft,float fr,float fb)
 		:l(fl)
@@ -74,7 +76,7 @@ struct FourBoundaries
 	float b;	//buttom
 };
 
-struct PolygonInfo
+struct TRANSFORMATION_DECL PolygonInfo
 {
 	LLPolygon		polygon;
 	FourBoundaries	fourBound;	//shp数据中有边界数据，在网上没找到
