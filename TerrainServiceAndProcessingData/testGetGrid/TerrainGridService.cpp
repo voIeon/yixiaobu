@@ -1,17 +1,18 @@
 #include "TerrainGridService.h"
 
 #include <string>
-#include <f:/workspace/CutShpGrid/CutShpGrid/Transformation.h>
 
-#include <f:/workspace/CutShpGrid/CutShpGrid/GridDefine.h> //临时的
+#include <TransformationDll/Transformation.h>
+
+#include <TransformationDll/GridDefine.h> 
 
 using namespace std;
 
 namespace SHPMAP
 {
 	TerrainGridService::TerrainGridService()
-		:_Left(0),_Top(0),_Right(0),_Buttom(0)
-		,_interval(0)
+		:_iLeft(0),_iTop(0),_iRight(0),_iButtom(0)
+		,_iInterval(0)
 	{
 
 	}
@@ -23,24 +24,24 @@ namespace SHPMAP
 
 	void TerrainGridService::ReadTerrainData()
 	{
-		_Left	= 120;
-		_Top	= 30;
-		_Right	= 123;
-		_Buttom = 28;
+		_iLeft	= 120;
+		_iTop	= 30;
+		_iRight	= 123;
+		_iButtom = 28;
 
-		_interval = 50;//m
+		_iInterval = 50;//m
 	}
 
 	void TerrainGridService::ReadMapRegionConfig()
 	{
-		unsigned int il = _Left;
-		unsigned int ib = _Buttom;
+		unsigned int il = _iLeft;
+		unsigned int ib = _iButtom;
 
 		//再纵向向上 （一行）
-		for (; ib < _Top; ++ib)
+		for (; ib < _iTop; ++ib)
 		{
 			//先横向移动 （一列）
-			for (; il < _Right; ++il)
+			for (; il < _iRight; ++il)
 			{
 				ReadTerrainGridIndexDataFile(il, ib);
 				ReadTerrainGridDataFile(il, ib);
@@ -94,10 +95,10 @@ namespace SHPMAP
 
 	int TerrainGridService::GetPercentByLL(double lon, double lat)
 	{
-		if (lon < _Left || lat < _Buttom || lat > _Top || lon > _Right) return 1.0;
+		if (lon < _iLeft || lat < _iButtom || lat > _iTop || lon > _iRight) return 1.0;
 
-		int iColumn = _Right - _Left;
-		int indexBlock = iColumn * (lat - _Buttom) + (lon - _Left) ;
+		int iColumn = _iRight - _iLeft;
+		int indexBlock = iColumn * (lat - _iButtom) + (lon - _iLeft) ;
 
 		vector <int >& vecIndex = _vecIndexs.at(indexBlock);
 		vector <GridInfo>& vecGridInfo = _vecGridInfos.at(indexBlock);
@@ -126,8 +127,8 @@ namespace SHPMAP
 
 		CTVector3d ecef;
 		//lat在前 lon在后
-		CTVector3d stepX1(0, _interval, 0);
-		CTVector3d stepY1(_interval, 0, 0);
+		CTVector3d stepX1(0, _iInterval, 0);
+		CTVector3d stepY1(_iInterval, 0, 0);
 		CTVector3d stepY0;
 		CTVector3d stepX0;
 

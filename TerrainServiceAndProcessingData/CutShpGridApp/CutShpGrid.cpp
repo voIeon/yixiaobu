@@ -1,8 +1,5 @@
 ﻿#include "CutShpGrid.h"
 
-//#include "GridDefine.h"
-
-#include <TranformationDll/Transformation.h>
 
 struct CutShpGridPrivate
 {

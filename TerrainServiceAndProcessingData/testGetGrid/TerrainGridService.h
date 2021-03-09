@@ -3,7 +3,7 @@
 
 #include <vector>
 
-#include <boost/serialization/singleton.hpp> 
+//#include <boost/serialization/singleton.hpp> 
 
 namespace SHPMAP
 {
@@ -33,18 +33,18 @@ namespace SHPMAP
 
 		void GetGridIndexInBlock(int& iColumn, int& jRow, const double lon, const double lat);
 	private:
-		int _Left;
-		int _Top;
-		int _Right;
-		int _Buttom;
+		int _iLeft;
+		int _iTop;
+		int _iRight;
+		int _iButtom;
 
-		int _interval;
+		int _iInterval;
 
 		std::vector<std::vector< GridInfo> > _vecGridInfos;
 		std::vector<std::vector<int> >		 _vecIndexs;
 	};
 
-	typedef boost::serialization::singleton<TerrainGridService> TerrainGridServiceSingleton;
+//	typedef boost::serialization::singleton<TerrainGridService> TerrainGridServiceSingleton;
 }
 
 

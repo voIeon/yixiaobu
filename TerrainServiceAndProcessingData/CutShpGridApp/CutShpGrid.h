@@ -1,6 +1,6 @@
 #pragma once
 
-#include <TranformationDll/GridDefine.h>
+#include <TransformationDll/GridDefine.h>
 
 #include <QtWidgets/QWidget>
 #include "ui_CutShpGrid.h"
