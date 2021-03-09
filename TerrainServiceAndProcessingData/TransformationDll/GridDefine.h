@@ -31,13 +31,26 @@ struct TRANSFORMATION_DECL CTVector3
 		, z(_z)
 	{};
 
-	CTVector3& operator+=(CTVector3& ref)
+	CTVector3& operator+=(const CTVector3& ref)
 	{
 		this->x += ref.x;
 		this->y += ref.y;
 		this->z += ref.z;
 
 		return (*this);
+	}
+
+	double Lenght()
+	{
+		return sqrt(x * x + y * y + z * z);
+	}
+
+	//叉乘
+	CTVector3 CrossProduct(const CTVector3& ref)
+	{
+		return CTVector3(this->y * ref.z - this->z * ref.y,
+			this->x * ref.z - this->z * ref.x,
+			this->x * ref.y - this->y * ref.x);
 	}
 
 	T x;
